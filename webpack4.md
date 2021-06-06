@@ -39,6 +39,16 @@ yarn add -D webpack webpack-cli
     }
 }
 ```
+- Adding watch mode
+```
+{
+    scripts: {
+        ...
+        "build:dev": "yarn build -- --mode development --watch",
+        ...
+    }
+}
+```
 - Setting up Debugging
 ```
 {
@@ -52,28 +62,17 @@ yarn add -D webpack webpack-cli
 ```
 Open the url `chrome://inspect/#devices` on Chrome,
 also you can click a link on Chrome to open dedicated DevTools for Node.
-- Adding watch mode
-```
-{
-    scripts: {
-        ...
-        "build:dev": "yarn build -- --mode development --watch",
-        ...
-    }
-}
-```
 - Add modules and build them
 ```
 touch src/message.js
+vim src/message.js
+export default "Hello";
 
-// src/message.js
-export default "Hello world";
-
-// src/index.js
+vim src/index.js
 import msg from './message";
 console.log(msg);
 
-yarn build:dev
+yarn build:prod
 node dist/main.js
 ```
-- Dead code elimination or tree shaking: It's the fact that Webpack is using statically the syntax to identify what am I using
+- Dead code elimination or tree shaking
