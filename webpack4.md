@@ -7,6 +7,8 @@ Three ways that you can use Webpack:
 - Webpack CLI
 - Node API: [Neutrino](https://github.com/neutrinojs/neutrino) and joy
 
+* * *
+
 - Install Node.js and yarn
 ```
 npm install --global yarn
@@ -14,7 +16,8 @@ npm install --global yarn
 - Create your project folder, install webpack as a dev dependency
 ```
 yarn init
-yarn add -D webpack
+touch src/index.js
+yarn add -D webpack webpack-cli
 ```
 - Add a script for webpack in package.json, webpack is a executable file under node_modules/.bin folder
 ```
@@ -24,7 +27,7 @@ yarn add -D webpack
     }
 }
 ```
-- Add scripts for webpack different modes
+- Add scripts for different application modes
 ```
 {
     scripts: {
@@ -33,5 +36,4 @@ yarn add -D webpack
         "prod": "yarn webpack -- --mode production"
     }
 }
-
 ```
