@@ -67,11 +67,13 @@ also you can click a link on Chrome to open dedicated DevTools for Node.
 touch src/message.js
 vim src/message.js
 export default "Hello";
-
+```
+```
 vim src/index.js
 import msg from './message";
 console.log(msg);
-
+```
+```
 yarn build:prod
 node dist/main.js
 ```
