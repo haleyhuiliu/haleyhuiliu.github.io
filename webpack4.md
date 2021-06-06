@@ -7,7 +7,9 @@ Three ways that you can use Webpack:
 - Webpack CLI
 - Node API: [Neutrino](https://github.com/neutrinojs/neutrino) and joy
 
+
 * * *
+
 
 - Install Node.js and yarn
 ```
@@ -19,21 +21,59 @@ yarn init
 touch src/index.js
 yarn add -D webpack webpack-cli
 ```
-- Add a script for webpack in package.json, webpack is a executable file under node_modules/.bin folder
+- Add a script for build in package.json, webpack is a executable file under node_modules/.bin folder
 ```
 {
     scripts: {
-        "webpack": "webpack"
+        "build": "webpack"
     }
 }
 ```
-- Add scripts for different application modes
+- Add scripts for environment builds
 ```
 {
     scripts: {
-        "webpack": "webpack",
-        "dev": "yarn webpack -- --mode development",
-        "prod": "yarn webpack -- --mode production"
+        ...
+        "build:dev": "yarn build -- --mode development",
+        "build:prod": "yarn build -- --mode production"
     }
 }
 ```
+- Setting up Debugging
+```
+{
+    scripts: {
+        ...
+        "debug": "node --inspect --inspect-brk ./node_modules/webpack/bin/webpack.js",
+        "debug:dev": "yarn debug -- --mode development",
+        "debug:prod": "yarn debug -- --mode production"
+    }
+}
+```
+Open the url `chrome://inspect/#devices` on Chrome,
+also you can click a link on Chrome to open dedicated DevTools for Node.
+- Adding watch mode
+```
+{
+    scripts: {
+        ...
+        "build:dev": "yarn build -- --mode development --watch",
+        ...
+    }
+}
+```
+- Add modules and build them
+```
+touch src/message.js
+
+// src/message.js
+export default "Hello world";
+
+// src/index.js
+import msg from './message";
+console.log(msg);
+
+yarn build:dev
+node dist/main.js
+```
+- Dead code elimination or tree shaking: It's the fact that Webpack is using statically the syntax to identify what am I using
