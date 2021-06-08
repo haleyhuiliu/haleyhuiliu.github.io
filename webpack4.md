@@ -1,4 +1,4 @@
-Last edit time: "Tue Jun 08 2021 03:17:25 GMT-0700 (Pacific Daylight Time)"
+Last edit time: "Tue Jun 08 2021 04:40:16 GMT-0700 (Pacific Daylight Time)"
 
 Reference: https://frontendmasters.com/courses/webpack-fundamentals/ Webpack 4 Fundamentals by Sean Larkin
 
@@ -188,7 +188,7 @@ module.exports = () => ({
 });
 ```
 ```
-vim touch build-utils/production.webpack.config.js
+vim build-utils/production.webpack.config.js
 module.exports = () => ({
     mode: "production",
     output: {
@@ -208,6 +208,7 @@ module.exports = ({ mode }) => merge({ ... }, modeConfig(mode));
         "build:dev": "yarn build --env mode=development",
         "build:prod": "yarn build --env mode=production",
         ...
+        "server:dev": "yarn server --env mode=development"
     }
 }
 ```
