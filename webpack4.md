@@ -21,11 +21,11 @@ yarn init
 touch src/index.js
 yarn add -D webpack webpack-cli
 ```
-- Add a script for build in package.json, webpack is a executable file under node_modules/.bin folder
+- Add a script for build in package.json, there is a executable file named webpack under node_modules/.bin folder
 ```
 {
     scripts: {
-        "build": "webpack"
+        "build": "webpack",
     }
 }
 ```
@@ -35,7 +35,7 @@ yarn add -D webpack webpack-cli
     scripts: {
         ...
         "build:dev": "yarn build -- --mode development",
-        "build:prod": "yarn build -- --mode production"
+        "build:prod": "yarn build -- --mode production",
     }
 }
 ```
@@ -56,7 +56,7 @@ yarn add -D webpack webpack-cli
         ...
         "debug": "node --inspect --inspect-brk ./node_modules/webpack/bin/webpack.js",
         "debug:dev": "yarn debug -- --mode development",
-        "debug:prod": "yarn debug -- --mode production"
+        "debug:prod": "yarn debug -- --mode production",
     }
 }
 ```
@@ -70,7 +70,7 @@ export default "Hello";
 ```
 ```
 vim src/index.js
-import msg from './message";
+import msg from "./message";
 console.log(msg);
 ```
 ```
@@ -78,3 +78,41 @@ yarn build:prod
 node dist/main.js
 ```
 - Dead code elimination or tree shaking
+- Create `webpack.config.js` file and add entry property to it. Entry tells webpack what(files) to load for the browser, compliments the output property.
+```
+module.exports = {
+    entry: "./browser.main.ts",
+}
+```
+
+- Add output property: output tells webpack where and how to distribute bundles (compilations), works with entry.
+```
+module.exports = {
+    ...
+    output: {
+        path: "./dist",
+        filename: "./bundle.js",
+    }
+}
+```
+- Add loaders and rules. A rule set tells webpack how to modify files before its added to dependency graph. Loaders are also javascript modules(functions) that takes the source file, and returns it in a [modified] state.
+```
+module.exports = {
+    ...
+    rules: [
+        {test: /\.ts$/, use: 'ts-loader'},
+        {test: /\.js$/, use: 'babel-loader'},
+        {test: /\.css$/, use: 'css-loader'},
+    ]
+}
+```
+Enforce can be `pre` or `post`, tells webpack to run this rule before or after all other rules.
+```
+module.exports = {
+    ...
+    rules: [
+        {test: /\.ts$/, use: 'ts-loader', enforce: "pre"},
+        ...
+    ]
+}
+```
