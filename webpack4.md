@@ -78,41 +78,65 @@ yarn build:prod
 node dist/main.js
 ```
 - Dead code elimination or tree shaking
-- Create `webpack.config.js` file and add entry property to it. Entry tells webpack what(files) to load for the browser, compliments the output property.
+- Create a `webpack.config.js` file and add entry property to it. Entry tells webpack what(files) to load for the browser, compliments the output property.
 ```
-module.exports = {
+module.exports = () => ({
     entry: "./browser.main.ts",
-}
+});
 ```
-
 - Add output property: output tells webpack where and how to distribute bundles (compilations), works with entry.
 ```
-module.exports = {
+module.exports = () => ({
     ...
     output: {
         path: "./dist",
-        filename: "./bundle.js",
+        filename: "bundle.js",
     }
-}
+});
 ```
-- Add loaders and rules. A rule set tells webpack how to modify files before its added to dependency graph. Loaders are also javascript modules(functions) that takes the source file, and returns it in a [modified] state.
+- Add loaders and rules. A rule set tells webpack how to modify files before its added to dependency graph. Loaders are also javascript modules(functions) that takes the source file, and returns it in a [modified] state. A loader tells webpack how to interpret and translate files, transformed on a per-file basis before adding to the dependency graph.
 ```
-module.exports = {
+module.exports = () => ({
     ...
     rules: [
         {test: /\.ts$/, use: 'ts-loader'},
         {test: /\.js$/, use: 'babel-loader'},
         {test: /\.css$/, use: 'css-loader'},
     ]
-}
+})
 ```
 Enforce can be `pre` or `post`, tells webpack to run this rule before or after all other rules.
 ```
-module.exports = {
+module.exports = () => ({
     ...
     rules: [
         {test: /\.ts$/, use: 'ts-loader', enforce: "pre"},
         ...
     ]
-}
+})
+```
+Chaining loaders always execute from right to left
+``` 
+module.exports = () => ({
+    ...
+    rules: [
+        {test: /\.less$/, use: ['style', 'css', 'less']}
+    ]
+})
+```
+- A plugin for webpack, it is an object with an apply property in the prototype chain, to allow you to hook into the entire compilation lifecycle of events. Plugins adds additional functionality to compilations(optimized bundled modules). More powerful w/more access to CompilerAPI. webpack has a variety of built in plugins. 
+```
+yarn add -D html-webpack-plugin
+```
+```
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.export = () => ({
+    ...
+    plugins: [new HtmlWebpackPlugin(), new webpack.ProgressPlugin()]
+})
+```
+- Setting up a local development server
+```
 ```
