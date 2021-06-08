@@ -1,3 +1,7 @@
+Last edit time: "Tue Jun 08 2021 03:17:25 GMT-0700 (Pacific Daylight Time)"
+
+Reference: https://frontendmasters.com/courses/webpack-fundamentals/ Webpack 4 Fundamentals by Sean Larkin
+
 Webpack is a module bundler. A module bundler lets you write any module format, compiles them for the browser. On top of that, Webpack can support
 - code splitting
 - static async bundling, where you can create separately bundles at build time
@@ -20,12 +24,12 @@ npm install --global yarn
 yarn init
 mkdir src
 touch src/index.js
-yarn add -D webpack webpack-cli
+yarn add -D webpack@^4.x.x webpack-cli@^3.x.x
 ```
 - Add a script for build in package.json, there is a executable file named webpack under node_modules/.bin folder
 ```
 {
-    scripts: {
+    "scripts": {
         "build": "webpack",
     }
 }
@@ -33,7 +37,7 @@ yarn add -D webpack webpack-cli
 - Add scripts for environment builds
 ```
 {
-    scripts: {
+    "scripts": {
         ...
         "build:dev": "yarn build --mode development",
         "build:prod": "yarn build --mode production",
@@ -43,7 +47,7 @@ yarn add -D webpack webpack-cli
 - Adding watch mode
 ```
 {
-    scripts: {
+    "scripts": {
         ...
         "build:dev": "yarn build --mode development --watch",
         ...
@@ -53,7 +57,7 @@ yarn add -D webpack webpack-cli
 - Setting up Debugging
 ```
 {
-    scripts: {
+    "scripts": {
         ...
         "debug": "node --inspect --inspect-brk ./node_modules/webpack/bin/webpack.js",
         "debug:dev": "yarn debug --mode development",
@@ -106,7 +110,7 @@ module.exports = () => ({
             {test: /\.js$/, use: 'babel-loader'},
         ]
     }
-})
+});
 ```
 Enforce can be `pre` or `post`, tells webpack to run this rule before or after all other rules.
 ```
@@ -117,7 +121,7 @@ module.exports = () => ({
             {test: /\.ts$/, use: 'ts-loader', enforce: "pre"},
         ]
     }
-})
+});
 ```
 Chaining loaders always execute from right to left
 ```
@@ -139,7 +143,7 @@ module.exports = () => ({
             {test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader']}
         ]
     }
-})
+});
 ```
 - A plugin for webpack, it is an object with an apply property in the prototype chain, to allow you to hook into the entire compilation lifecycle of events. Plugins adds additional functionality to compilations(optimized bundled modules). More powerful w/more access to CompilerAPI. webpack has a variety of built in plugins. 
 ```
@@ -148,11 +152,62 @@ yarn add -D html-webpack-plugin
 ```
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-module.export = () => ({
+module.exports = () => ({
     ...
     plugins: [new HtmlWebpackPlugin(), new webpack.ProgressPlugin()]
 })
 ```
-- Setting up a local development server
+- Setting up a local development server, webpack-dev-server is a web server based on Express, instead of creating a bundle to your dist folder, it actually generates a bundle in memory, and it serves that information up to Express, which then does a web socket connection to support hot reloading. 
+webpack-dev-server is made up of webpack-dev-middleware and Express, it's essentially an Express plugin, we can actually install the package itself standalone, and add it to custom Express application, then we have things like hot module replacement on the server side.
 ```
+yarn add -D webpack-dev-server
+```
+```
+{
+    "scripts": {
+        ...
+        "server": "webpack serve",
+        "server:dev": "yarn server --mode development"
+    }
+}
+```
+- Splitting Environment Config Files
+```
+mkdir build-utils
+touch build-utils/development.webpack.config.js
+touch build-utils/production.webpack.config.js
+yarn add -D webpack-merge
+```
+```
+vim build-utils/development.webpack.config.js
+module.exports = () => ({
+    mode: "development",
+    output: {
+        filename: "bundle.js"
+    }
+});
+```
+```
+vim touch build-utils/production.webpack.config.js
+module.exports = () => ({
+    mode: "production",
+    output: {
+        filename: "[chunkhash].js"
+    }
+});
+```
+```
+const { merge } = require("webpack-merge");
+const modeConfig = mode => require(`./build-utils/${mode}.webpack.config.js`)(mode);
+module.exports = ({ mode }) => merge({ ... }, modeConfig(mode));
+```
+```
+{
+    "scripts": {
+        ...
+        "build:dev": "yarn build --env mode=development",
+        "build:prod": "yarn build --env mode=production",
+        ...
+    }
+}
 ```
