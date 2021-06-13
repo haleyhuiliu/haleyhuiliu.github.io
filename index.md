@@ -1,26 +1,22 @@
 [Home](./index.html) | [About](./about.html) | [Blogs](./blogs.html) | [Contact](./contact.html) | [Engineering](./engineering.html) | [Projects](/projects.html)
 
-# About
+# ABOUT
 
 I am a front end engineer who has 6 years of working experience.
 
-# Blogs
-
-*   Step1: Understand the project goal
-*   Step2: Collect ideas from different perspectives
-*   Step3: Build the team
-*   Step4: Scope out the requirements for current phase
-*   Step5: Implement features
-*   Webpack4 [en](./webpack4.html)
-
-
-# Contact
+# CONTACT
 
 | Contact      | Detail               |
 |:-------------|:---------------------|
 | Email        | huiliu1110@yahoo.com |
 | LinkedIn     | huiliu1110@yahoo.com |
 
+# NOTES
+
+*   Webpack [en](./webpack.html)
+*   Web Performance [en](./web-performance.html)
+*   Web Security
+*   Network [zh](./network.html)
 
 # Engineering
 
