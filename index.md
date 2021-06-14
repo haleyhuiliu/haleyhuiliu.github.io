@@ -16,7 +16,7 @@ I am a front end engineer who has 6 years of working experience.
 *   Webpack [en](./webpack.html)
 *   Web Performance [en](./web-performance.html)
 *   Web Security
-*   Network [zh](./network.html)
+*   Computer Networking [zh](./network.html)
 
 # Engineering
 
